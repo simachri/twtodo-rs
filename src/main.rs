@@ -8,13 +8,15 @@ extern crate reqwest;
 extern crate serde_json;
 
 mod todo;
+mod model;
+mod auth;
 
 #[tokio::main]
 async fn main() {
     dotenv().expect("A .env file is required. Please inspect the README.");
 
-    let oauth_cred = todo::read_client_credentials_from_env()
+    let oauth_cred = auth::read_client_credentials_from_env()
         .expect("A .env file is required. Please inspect the README.");
 
-    todo::start_server(oauth_cred).await;
+    auth::OAuthClientCredentialsFlow::start_auth_server(oauth_cred).await;
 }
